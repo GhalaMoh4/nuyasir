@@ -1,40 +1,65 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Nuyasir (نُيسر)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A zero-interest tuition financing portal built for universities: students apply once, upload a funding document, and track their status by application number, while two independent reviewers move each application through a two-stage approval pipeline.
 
-## About Laravel Assessment
-Project Structure
-This assessment consists of two pages:
+> **[ HOME SCREENSHOT: replace this line with `![Home](docs/screenshots/home.png)` ]**
 
-1.Form Page<br>
-2.Table Page
+## What it does
 
-Form Page <br>
-Create a form page that allows users to input data. The form should include the following fields:
+Nuyasir funds all or part of tuition at 0% profit for students admitted into paid programs: Master's, Higher Diploma, Applied Diploma, and bridging programs. An applicant fills one form, uploads a funding document, and can check their status at any time with nothing but an application number.
 
-name: Input text<br>
-email: Input email<br>
-password: Input password<br>
-gender: Select with options (Male/Female)<br>
-birthday: Input date<br>
-status active: Checkbox<br>
-submit: Button to save data<br>
-go to table page: Button to navigate to the Table Page<br>
+The process has four stages:
 
-Table Page<br>
-Display all users with active status in a table. The table should show the following columns:
+1. **تعبئة النماذج**: applicant completes the form and uploads a funding document.
+2. **التدقيق والمراجعة**: review starts the moment the form is submitted.
+3. **تحديث الحالة**: status updates to accepted, rejected, or needs changes.
+4. **بدء إيداع التمويل**: once accepted, the financing body begins the deposit.
 
-id<br>
-name<br>
-email<br>
-gender<br>
-birthday (in dd/mm/yyyy format)<br>
-created at (formatted for readability)<br>
-delete button: Soft delete functionality to delete the user<br>
+> **[ FORM SCREENSHOT: replace this line with `![Form](docs/screenshots/form.png)` ]**
 
+## Workflow: two reviewers, one pipeline
 
+Every application moves through two independent reviewers before funding starts: the university's own queue first, then an external financing partner. Each stage has its own acceptance status, so a preliminary yes from one side is never mistaken for the other's final sign-off.
+
+| Stage | Role | Status | What happens |
+|---|---|---|---|
+| `/table` | University reviewer | `pending` | New applications land here. A reviewer accepts, rejects, or sends back for changes. |
+| handoff | n/a | `قبول مبدأي` (preliminary) | Preliminary acceptance moves the application off the university queue and onto the funding partner's. |
+| `/mslak` | Funding partner | `قبول نهائي` (final) | The funding partner gives final sign-off. Funding deposit begins after this. |
+
+> **[ TABLE SCREENSHOT: replace this line with `![Review queue](docs/screenshots/table.png)` ]**
+>
+> **[ DETAILS MODAL SCREENSHOT: replace this line with `![Application detail](docs/screenshots/details-modal.png)` ]**
+
+## Tech stack
+
+The technology underneath is plain and well-established on purpose: Laravel on the backend, Blade templates for the pages, MySQL for storage.
+
+- Laravel 10
+- PHP 8
+- MySQL
+- Blade
+- Laravel Breeze auth
+- Bootstrap 5
+- Vite + Tailwind
+- Role-based middleware
+
+## A closer look
+
+> **[ MOBILE SCREENSHOT: replace this line with `![Mobile home](docs/screenshots/mobile-home.png)` ]**
+
+## Running it locally
+
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+# set DB_* values in .env, then:
+php artisan migrate
+php artisan storage:link
+php artisan serve
+npm run dev
+```
+
+University and funding-partner names and contact details in this repository are placeholders. Swap them with real values before deploying for an actual institution.
